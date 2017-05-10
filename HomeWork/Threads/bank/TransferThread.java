@@ -27,13 +27,17 @@ public class TransferThread implements Runnable{
                 ready = true;
                 happy = true;
 
-                MailerThread.class.notify();
+                synchronized (MailerThread.class){
+                    MailerThread.class.notify();
+                }
             }
             else{
                 ready = true;
                 happy = false;
 
-                MailerThread.class.notify();
+                synchronized (MailerThread.class){
+                    MailerThread.class.notify();
+                }
 
                 //System.out.println("Cansel " + amount + "! from " + acc1.userName + " to " + acc2.userName);
                 //return;

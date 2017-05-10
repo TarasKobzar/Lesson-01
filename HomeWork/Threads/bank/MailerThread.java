@@ -13,9 +13,8 @@ public class MailerThread implements Runnable{
 
                     if (TransferThread.ready){
                         if (TransferThread.happy = true)
-                            System.out.println("Update " + TransferThread.amount + "! - " + acc1.userName + ": " + acc1.balance + ", " + acc2.userName + ": " + acc2.balance);
-
-
+                            System.out.println("Транзакция прошла успешно!");
+                        else System.out.println("Отмена транзакции!");
                     }
                 }
                 catch (InterruptedException e){
