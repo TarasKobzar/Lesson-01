@@ -45,5 +45,6 @@ public class TransferThread implements Runnable{
         }
 
         //System.out.println("Update " + amount + "! - " + acc1.userName + ": " + acc1.balance + ", " + acc2.userName + ": " + acc2.balance);
+        //la-la-la
     }
 }

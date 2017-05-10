@@ -39,5 +39,6 @@ public class Bank {
         Thread thread = new Thread(new TransferThread(acc1, acc2, amount));
 
         thread.start();
+        //la-la-la
     }
 }
