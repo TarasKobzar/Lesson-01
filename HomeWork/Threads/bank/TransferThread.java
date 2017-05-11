@@ -1,11 +1,12 @@
 package HomeWork.Threads.bank;
 
-/**
- * Created by Тарас on 10.05.2017.
- */
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
 public class TransferThread implements Runnable{
-    public static boolean ready;
-    public static boolean happy;
+    static boolean ready;
+
+    static BlockingQueue<String> mailerQueue = new LinkedBlockingQueue<>();
 
     Account acc1;
     Account acc2;
@@ -18,33 +19,39 @@ public class TransferThread implements Runnable{
     }
 
     public void run(){
-        synchronized (acc1){
-            if (acc1.balance >= amount) {
-                synchronized (acc2) {
-                    acc1.balance -= amount;
-                    acc2.balance += amount;
-                }
-                ready = true;
-                happy = true;
+        if(acc1.id < acc2.id){
+            synchronized (acc1){
+                if (acc1.balance >= amount) {
+                    synchronized (acc2) {
+                        acc1.balance -= amount;
+                        acc2.balance += amount;
 
-                synchronized (MailerThread.class){
-                    MailerThread.class.notify();
+                        mailerQueue.add(Thread.currentThread().getName() + " Finish! $ " + amount + ": " + acc1.userName + " --> " + acc2.userName);
+                    }
                 }
-            }
-            else{
-                ready = true;
-                happy = false;
+                else{
+                    mailerQueue.add(Thread.currentThread().getName() + " Cancel! $ " + amount + ": " + acc1.userName + " -X-> " + acc2.userName);
 
-                synchronized (MailerThread.class){
-                    MailerThread.class.notify();
+                    return;
                 }
-
-                //System.out.println("Cansel " + amount + "! from " + acc1.userName + " to " + acc2.userName);
-                //return;
             }
         }
+        else{
+            synchronized (acc2){
+                synchronized (acc1) {
+                    if (acc1.balance >= amount) {
+                        acc1.balance -= amount;
+                        acc2.balance += amount;
 
-        //System.out.println("Update " + amount + "! - " + acc1.userName + ": " + acc1.balance + ", " + acc2.userName + ": " + acc2.balance);
-        //la-la-la
+                        mailerQueue.add(Thread.currentThread().getName() + " Finish! $ " + amount + ": " + acc1.userName + " --> " + acc2.userName);
+                    }
+                    else{
+                        mailerQueue.add(Thread.currentThread().getName() + " Cancel! $ " + amount + ": " + acc1.userName + " -X-> " + acc2.userName);
+
+                        return;
+                    }
+                }
+            }
+        }
     }
 }

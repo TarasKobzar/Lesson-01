@@ -1,27 +1,21 @@
 package HomeWork.Threads.bank;
 
+import java.util.Iterator;
+
 /**
  * Created by Тарас on 10.05.2017.
  */
 public class MailerThread implements Runnable{
-
     public void run(){
-        while(!Thread.currentThread().isInterrupted()){
-            synchronized (this){
-                try{
-                    this.wait();
 
-                    if (TransferThread.ready){
-                        if (TransferThread.happy = true)
-                            System.out.println("Транзакция прошла успешно!");
-                        else System.out.println("Отмена транзакции!");
-                    }
-                }
-                catch (InterruptedException e){
-                    Thread.currentThread().interrupt();
-                }
+        while(!Thread.currentThread().isInterrupted()){
+            Iterator iter = TransferThread.mailerQueue.iterator();
+
+            if(iter.hasNext()){
+                System.out.println(iter.next());
+
+                iter.remove();
             }
         }
     }
-    //la-la-la
 }
