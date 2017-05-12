@@ -7,14 +7,12 @@ import java.util.Iterator;
  */
 public class MailerThread implements Runnable{
     public void run(){
-
         while(!Thread.currentThread().isInterrupted()){
-            Iterator iter = TransferThread.mailerQueue.iterator();
-
-            if(iter.hasNext()){
-                System.out.println(iter.next());
-
-                iter.remove();
+            try {
+                System.out.println(TransferThread.mailerQueue.take());
+            }
+            catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
         }
     }

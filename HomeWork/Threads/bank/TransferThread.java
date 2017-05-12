@@ -26,11 +26,19 @@ public class TransferThread implements Runnable{
                         acc1.balance -= amount;
                         acc2.balance += amount;
 
-                        mailerQueue.add(Thread.currentThread().getName() + " Finish! $ " + amount + ": " + acc1.userName + " --> " + acc2.userName);
+                        try {
+                            mailerQueue.put(Thread.currentThread().getName() + " Finish! $ " + amount + ": " + acc1.userName + " --> " + acc2.userName);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
                 else{
-                    mailerQueue.add(Thread.currentThread().getName() + " Cancel! $ " + amount + ": " + acc1.userName + " -X-> " + acc2.userName);
+                    try {
+                        mailerQueue.put(Thread.currentThread().getName() + " Cancel! $ " + amount + ": " + acc1.userName + " -X-> " + acc2.userName);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
 
                     return;
                 }
@@ -43,10 +51,18 @@ public class TransferThread implements Runnable{
                         acc1.balance -= amount;
                         acc2.balance += amount;
 
-                        mailerQueue.add(Thread.currentThread().getName() + " Finish! $ " + amount + ": " + acc1.userName + " --> " + acc2.userName);
+                        try {
+                            mailerQueue.put(Thread.currentThread().getName() + " Finish! $ " + amount + ": " + acc1.userName + " --> " + acc2.userName);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                     else{
-                        mailerQueue.add(Thread.currentThread().getName() + " Cancel! $ " + amount + ": " + acc1.userName + " -X-> " + acc2.userName);
+                        try {
+                            mailerQueue.put(Thread.currentThread().getName() + " Cancel! $ " + amount + ": " + acc1.userName + " -X-> " + acc2.userName);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
 
                         return;
                     }
