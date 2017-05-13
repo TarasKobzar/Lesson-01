@@ -13,9 +13,8 @@ public class Bank {
         accList.add(new Account(3, "Kozlov", 50));
         accList.add(new Account(4, "Pupkin", 250));*/
 
-        for (Account acc : accList) {
+        for (Account acc : accList)
             System.out.println(acc.userName + ": " + acc.balance);
-        }
 
         System.out.print("\n");
 
@@ -23,8 +22,8 @@ public class Bank {
         mailerThread.start();
 
         for (int i = 0; i < 10; i++){
-            transferMoney(accList.get(0), accList.get(1), 50);
-            transferMoney(accList.get(1), accList.get(0), 50);
+            new Thread(new TransferThread(accList.get(0), accList.get(1), 50)).start();
+            new Thread(new TransferThread(accList.get(1), accList.get(0), 50)).start();
         }
 
         Thread.sleep(1000);
@@ -33,14 +32,7 @@ public class Bank {
 
         System.out.print("\n");
 
-        for (Account acc : accList) {
+        for (Account acc : accList)
             System.out.println(acc.userName + ": " + acc.balance);
-        }
-    }
-
-    public static void transferMoney(Account acc1, Account acc2, int amount) throws InterruptedException {
-        Thread thread = new Thread(new TransferThread(acc1, acc2, amount));
-
-        thread.start();
     }
 }
